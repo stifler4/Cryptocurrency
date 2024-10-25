@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crypto Mining Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            background-color: #121212;
+            color: #e0e0e0;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .navbar {
+            background-color: #1e1e1e;
+        }
+
+        .navbar-brand img {
+            height: 40px;
+        }
+
+        .change {
+            color: white;
+            /* border: 4px solid red; */
+            /* border-radius: 10px; */
+        }
+
+        .change img {
+            /* border: 4px solid red; */
+            border-radius: 50%;
+        }
+
+        .dashboard-container {
+            max-width: 900px;
+            margin: 40px auto;
+            text-align: center;
+        }
+
+        .dashboard-card {
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .dashboard-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .balance-card {
+            background-color: #28a745;
+        }
+
+        .profit-card {
+            background-color: #ffc107;
+        }
+
+        .bonus-card {
+            background-color: #82bac3;
+        }
+
+        .deposit-card {
+            background-color: #007bff;
+        }
+
+        .withdraw-card {
+            background-color: #dc3545;
+        }
+
+        .subscription-card {
+            background-color: #6c757d;
+        }
+
+        .crypto-card {
+            background-color: #f39c12;
+        }
+
+        .notification {
+            background-color: #1e1e1e;
+            border-radius: 8px;
+            margin-top: 20px;
+            padding: 15px;
+            position: relative;
+        }
+
+        .mining-status {
+            font-size: 1.2em;
+            margin-top: 20px;
+        }
+
+        .logout-button {
+            margin-top: 20px;
+        }
+
+        .chart-container {
+            margin-top: 30px;
+        }
+
+        .notification-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            max-width: 300px;
+        }
+
+        .notification-item {
+            background-color: #28a745;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            color: white;
+            opacity: 0.9;
+            transition: opacity 0.5s ease;
+        }
+
+        .notification-item.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <!-- Navigation Bar -->
+        <header>
+            <!-- Navigation Bar -->
+            <nav class="navbar navbar-expand-lg">
+                <div class="container">
+                    <a class="navbar-brand change" href="#">
+                        <img src="src/cl.jpg" alt="Crypto Miner Logo"> Christy McCarty
+                    </a>
+                    <div class="d-flex align-items-center">
+                        <span class="me-2 text-success">Verified</span>
+                        <i class="fa fa-check-circle" style="color: green; font-size: 1.5em;"></i>
+                    </div>
+                </div>
+            </nav>
+        </header>
+
+
+    </header>
+
+    <main class="dashboard-container">
+        <h1>Crypto Mining Dashboard</h1>
+        <p id="welcomeMessage"></p>
+
+        <!-- Mining Status -->
+        <div class="mining-status">
+            <p><strong>Status:</strong> <span class="text-success">Mining in Progress...</span></p>
+            <p><strong>Estimated Earnings:</strong> <span class="text-warning" id="estimatedEarnings">0.000 BTC</span>
+                in the last hour</p>
+        </div>
+
+        <!-- Cryptocurrency Balances -->
+        <h4>Cryptocurrency Balances</h4>
+        <div class="row">
+            <div class="col-12 col-sm-6">
+                <div class="dashboard-card crypto-card">
+                    <h5>Bitcoin Balance</h5>
+                    <p id="bitcoinBalance"><strong>1.5 BTC</strong></p>
+                    <p>Last Updated: <span id="lastUpdated">04/03/2024</span></p>
+                </div>
+            </div>
+            <div class="col-12 col-sm-6">
+                <div class="dashboard-card crypto-card">
+                    <h5>Ethereum Balance</h5>
+                    <p><strong>10 ETH</strong></p>
+                    <p>Last Updated: 04/03/2024</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Financial Information -->
+        <h4 class="mt-4">Financial Information</h4>
+        <div class="row">
+            <div class="col-12 col-sm-6 col-md-4">
+                <div class="dashboard-card balance-card">
+                    <h5>Total Balance</h5>
+                    <p id="totalBalance"><strong>$100</strong></p>
+                    <p>Last Updated: <span id="totalLastUpdated">04/03/2024</span></p>
+                </div>
+            </div>
+            <div class="col-12 col-sm-6 col-md-4">
+                <div class="dashboard-card profit-card">
+                    <h5>Total Profit</h5>
+                    <p id="totalProfit"><strong>$0</strong></p>
+                    <p id="returnRate">Return Rate: 50%</p>
+                </div>
+            </div>
+            <div class="col-12 col-sm-6 col-md-4">
+                <div class="dashboard-card bonus-card">
+                    <h5>Bonus Earnings</h5>
+                    <p><strong>$2,500</strong></p>
+                    <p>Expiry: 12/30/2024</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12 col-sm-6 col-md-4">
+                <div class="dashboard-card deposit-card">
+                    <h5>Total Deposit</h5>
+                    <p id="totalDeposit"><strong>$100.00</strong></p> <!-- Initial deposit set to $100 -->
+                    <p>Completed: 06/15/2024</p>
+                </div>
+            </div>
+            <div class="col-12 col-sm-6 col-md-4">
+                <div class="dashboard-card withdraw-card">
+                    <h5>Total Withdrawal</h5>
+                    <p id="totalWithdrawal"><strong>$0.00</strong></p>
+                    <p>Last Transaction: N/A</p>
+                </div>
+            </div>
+            <div class="col-12 col-sm-6 col-md-4">
+                <div class="dashboard-card subscription-card">
+                    <h5>Subscription Plan</h5>
+                    <p><strong>Platinum</strong></p>
+                </div>
+            </div>
+        </div>
+
+
+
+        <!-- Notification Area -->
+        <div class="notification-container" id="notificationContainer"></div>
+
+        <!-- Charts Section -->
+        <div class="chart-container">
+            <h4>Mining Profit Over Time</h4>
+            <canvas id="profitChart"></canvas>
+            <h4 class="mt-4">Cryptocurrency Balance Trends</h4>
+            <canvas id="balanceChart"></canvas>
+        </div>
+
+        <!-- Logout Button -->
+        <button id="logoutButton" class="btn btn-danger logout-button">Logout</button>
+    </main>
+
+    <script>
+        let totalEarnings = 0; // Total earnings from mining
+        const miningRate = 0.00001; // Rate of mining earnings per interval (in BTC)
+        const updateInterval = 5000; // Update interval in milliseconds (5 seconds)
+        let totalDeposited = 100; // Start with an initial deposit of $100
+        let miningStarted = true; // Set to true to start mining automatically
+
+        // Function to handle user logout
+        function logout() {
+            localStorage.setItem('isLoggedin', 'false'); // Set login state to false
+            window.location.href = 'Signup.html'; // Redirect to login/signup page
+        }
+
+        // Function to create and display a notification
+        function showNotification(message) {
+            const notificationContainer = document.getElementById('notificationContainer');
+            const notificationItem = document.createElement('div');
+            notificationItem.className = 'notification-item';
+            notificationItem.textContent = message;
+
+            // Append notification to container
+            notificationContainer.appendChild(notificationItem);
+
+            // Remove notification after 5 seconds
+            setTimeout(() => {
+                notificationItem.classList.add('hidden');
+                setTimeout(() => notificationContainer.removeChild(notificationItem), 500); // Remove from DOM after fade out
+            }, 5000);
+        }
+
+        let totalProfit = 0; // Start with $0 profit
+        const totalDeposit = 100; // Initial deposit amount
+
+        function simulateMining() {
+            // Mining rate: $1 every 3 minutes, spread over 36 intervals (5 seconds per interval)
+            const miningRate = 0.02778; // Earn $0.02778 per 5 seconds
+
+            setInterval(() => {
+                totalEarnings += miningRate; // Increase earnings by $0.02778 every interval
+                document.getElementById('estimatedEarnings').textContent = totalEarnings.toFixed(5) + " BTC";
+
+                // Update the Bitcoin balance (for display purposes, in BTC)
+                const currentBalance = parseFloat(document.getElementById('bitcoinBalance').textContent);
+                const newBalance = (currentBalance + totalEarnings).toFixed(5);
+                document.getElementById('bitcoinBalance').innerHTML = `<strong>${newBalance} BTC</strong>`;
+                document.getElementById('lastUpdated').textContent = new Date().toLocaleDateString();
+
+                // Simulate the withdrawal increase, adding $0.02778 every interval
+                const currentTotalWithdrawal = parseFloat(document.getElementById('totalWithdrawal').textContent.replace('$', '').replace(',', '') || 0);
+                const updatedTotalWithdrawal = (currentTotalWithdrawal + miningRate).toFixed(2);
+
+                // Update the displayed withdrawal amount
+                document.getElementById('totalWithdrawal').innerHTML = `<strong>$${updatedTotalWithdrawal}</strong>`;
+                document.getElementById('totalLastUpdated').textContent = new Date().toLocaleDateString();
+
+                // Update the total profit (matches mining progress)
+                totalProfit += miningRate; // Add mining rate to total profit
+                document.getElementById('totalProfit').innerHTML = `<strong>$${totalProfit.toFixed(2)}</strong>`; // Update Total Profit card
+
+                // Calculate the return rate based on profit and deposit
+                const returnRate = ((totalProfit / totalDeposit) * 100).toFixed(2);
+                document.getElementById('returnRate').innerHTML = `Return Rate: ${returnRate}%`; // Update return rate
+
+                // Show notification about earnings
+                showNotification(`You earned $${miningRate.toFixed(2)}! Your withdrawal amount is now $${updatedTotalWithdrawal}.`);
+            }, 5000); // Interval is 5 seconds
+        }
+
+        // Display user's name on login
+        window.onload = function () {
+            const isLoggedIn = localStorage.getItem('isLoggedin');
+            const welcomeMessage = document.getElementById('welcomeMessage');
+
+            if (isLoggedIn !== 'true') {
+                // Redirect to login page if user is not logged in
+                window.location.href = 'Signup.html';
+            } else {
+                const userName = localStorage.getItem('userName');
+                welcomeMessage.textContent = `Hello, ${userName}!`; // Display welcome message
+
+                // Display the initial deposit amount
+                document.getElementById('totalDeposit').innerHTML = `<strong>$${totalDeposited.toFixed(2)}</strong>`;
+                document.getElementById('totalLastUpdated').textContent = new Date().toLocaleDateString();
+
+                // Start mining simulation automatically
+                if (miningStarted) {
+                    simulateMining(); // Start mining simulation
+                }
+            }
+        };
+
+        // Attach logout event
+        document.getElementById('logoutButton').addEventListener('click', logout);
+    </script>
+    <script>
+        // Chart.js code to generate charts (dummy data)
+        const profitChartCtx = document.getElementById('profitChart').getContext('2d');
+        const profitChart = new Chart(profitChartCtx, {
+            type: 'line',
+            data: {
+                labels: ['0h', '1h', '2h', '3h', '4h', '5h'],
+                datasets: [{
+                    label: 'Profit (BTC)',
+                    data: [0, 0.001, 0.002, 0.003, 0.004, 0.005],
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 2,
+                    fill: false
+                }]
+            },
+            options: {
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Time'
+                        }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Profit (BTC)'
+                        },
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        const balanceChartCtx = document.getElementById('balanceChart').getContext('2d');
+        const balanceChart = new Chart(balanceChartCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Bitcoin', 'Ethereum'],
+                datasets: [{
+                    label: 'Balance',
+                    data: [1.5, 10], // Dummy data for balances
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
